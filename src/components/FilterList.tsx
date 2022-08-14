@@ -4,6 +4,12 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { NftCard } from "views/DropView/NftCard";
 import axios from 'axios';
 
+type Game = {
+    title: string;
+    cateogyr: string;
+    code: string;
+}
+
 type FilterListProps = {
     filter: string[];
     setFilter: Dispatch<[]>;
@@ -73,7 +79,7 @@ export const FilterList = ({ filter, setFilter, gameLists,sorting, walletLists, 
                 <p className="text-[20px] text-white font-semibold mb-[12px]">Other game user inflow</p>
 
                 <div className="space-y-[8px]">
-                    {gameLists.map(game => (
+                    {gameLists.map((game:Game) => (
                        
                         <GameFilter filterName={game.code} checkedItemHandler={checkedItemHandler} setGameFilter={setGameFilter} gameFilter={gameFilter} checkedItems={checkedItems}>{game.title + " [" + game.category + "]"}</GameFilter>
                         /*<div key={game.code} className="form-check items-center flex">
