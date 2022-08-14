@@ -9,6 +9,7 @@ import styles from "./index.module.css";
 import { Loader } from "components/Loader";
 import { Metaplex, bundlrStorage, MetaplexFile, useMetaplexFileFromBrowser, walletAdapterIdentity, MetaplexFileTag, UploadMetadataInput } from "@metaplex-foundation/js-next";
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { CreateTokenButton } from "utils/CreateTokenButton";
 
 
 const walletPublicKey = "";
@@ -30,6 +31,10 @@ export const UploadView: FC = ({ }) => {
     const [description, setDescription] = useState('');
     const [attribute, setAttribute] = useState({});
     const [fileImage, setFileImage] = useState("");
+
+    const [valueList, setValueList] = useState([]);
+    const [keyList, setKeyList] = useState([]);
+    const [numAttribute, setNumAttribute] = useState([0]);
 
 
     const [file, setFile] = useState<Readonly<{
@@ -63,6 +68,7 @@ export const UploadView: FC = ({ }) => {
 
     }
 
+    console.log(description);
     const UploadFile = async () => {
         try {
             setError('');
@@ -92,7 +98,6 @@ export const UploadView: FC = ({ }) => {
             setWalletToParsePublicKey(publicKey?.toBase58());
         }
     };
-    console.log(file);
     return (
 
         <div className="bg-gray min-h-screen bg-local bg-cover">
@@ -139,94 +144,136 @@ export const UploadView: FC = ({ }) => {
             <hr className="border border-white/10" />
             <div className="flex flex-row pl-[200px] pt-[28px] bg-gray pb-[150px]">
                 <div>
-                    <div className="flex flex-col space-y-[20px]">
+                    <form>
+                        <div className="flex flex-col space-y-[20px]">
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">Token Name</p>
-                                <p className="text-green items-start">*</p>
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">Token Name</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
+
+                                <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                    placeholder="Token name"
+                                    type="text"
+                                    required
+                                    onChange={(e) => setTokenName(e.target.value)} />
                             </div>
 
-                            <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                placeholder="Token name" />
-                        </div>
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">Symbol</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">Symbol</p>
-                                <p className="text-green items-start">*</p>
+                                <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                    placeholder="Symbol"
+                                    type="text"
+                                    required
+                                    onChange={(e) => setSymbol(e.target.value)} />
+                                <p className="text-white/50 text-[12px] mt-[4px]">*Symbol is an initial for your game item like DG in 'Doggie JAM[DG]'</p>
                             </div>
 
-                            <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                placeholder="Symbol" />
-                            <p className="text-white/50 text-[12px] mt-[4px]">*Symbol is an initial for your game item like DG in 'Doggie JAM[DG]'</p>
-                        </div>
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">Description</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">Description</p>
-                                <p className="text-green items-start">*</p>
+                                <textarea className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                    placeholder="Description"
+                                    type="text"
+                                    required
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
                             </div>
 
-                            <textarea className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                placeholder="Description" />
-                        </div>
 
 
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">External URL</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">External URL</p>
-                                <p className="text-green items-start">*</p>
+                                <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                    placeholder="e.g. https://example.com"
+                                    type="text"
+                                    onChange={(e) => setExternalUrl(e.target.value)}
+                                />
                             </div>
 
-                            <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                placeholder="e.g. https://example.com" />
-                        </div>
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">Number of tokens to mint</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">Number of tokens to mint</p>
-                                <p className="text-green items-start">*</p>
+                                <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                    placeholder="# of tokens"
+                                    type="number"
+                                    onChange={(e) => setQuantity(parseInt(e.target.value))} />
                             </div>
 
-                            <input className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                placeholder="# of tokens" />
-                        </div>
+
+                            <div>
+                                <div className="flex flex-row mb-[4px]">
+                                    <p className="text-[16px] text-[#F9FBFF]">Attribute</p>
+                                    <p className="text-green items-start">*</p>
+                                </div>
+                                <div className='space-y-[15px]'>
+                                    {numAttribute.map((num, i) => (
+                                        <div key={i} className="flex flex-row space-x-[4px] ">
+                                            <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                                placeholder="e.g. Color"
+                                                id={`attribute-key-${num}`}
+                                                onChange={(e) => {
+                                                    let keys = [...keyList];
+                                                    keys[Number(num)] = e.target.value;
+                                                    setKeyList(keys);
+                                                }}
+                                            />
+                                            <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
+                                                placeholder="e.g. Green"
+                                                id={`attribute-value-${num}`}
+                                                onChange={(e) => {
+                                                    let values = [...valueList];
+                                                    values[Number(num)] = e.target.value;
+                                                    setValueList(values);
+                                                }}
+                                            />
+
+                                            {numAttribute.length != 1 ? (<div className="w-[52px] p-[16px] items-center border-[#212121] border rounded-md cursor-pointer">
+                                                <img className="w-[20px] h-[20px]" src="/img/x.png"
+
+                                                    onClick={() => {
+                                                        setNumAttribute(numAttribute.filter(number => number != num));
+                                                    }}
+                                                />
+                                            </div>) : ("")}
+                                        </div>
+                                    ))}
+                                </div>
 
 
-                        <div>
-                            <div className="flex flex-row mb-[4px]">
-                                <p className="text-[16px] text-[#F9FBFF]">Attribute</p>
-                                <p className="text-green items-start">*</p>
-                            </div>
-
-                            <div className="flex flex-row space-x-[4px]">
-                                <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                    placeholder="e.g. Color" />
-                                <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
-                                    placeholder="e.g. Green" />
-                                <div className="w-[52px] p-[16px] items-center border-[#212121] border rounded-md cursor-pointer">
-                                    <img className="w-[20px] h-[20px]" src="/img/x.png" />
+                                <div className="mt-[12px] w-[137px] bg-white/10 items-center text-white text-[16px] px-[16px] py-[8px] rounded-md cursor-pointer" onClick={() => setNumAttribute((numAttribute.concat((numAttribute[numAttribute.length - 1]) + 1)))}>
+                                    Add Attribute
                                 </div>
                             </div>
 
-                            <div className="mt-[12px] w-[137px] bg-white/10 items-center text-white text-[16px] px-[16px] py-[8px] rounded-md cursor-pointer">
-                                Add Attribute
+
+                            <div className="form-check items-center flex">
+                                <input type="checkbox" className="form-checkbox bg-gray appearance-none h-5 w-5 border border-white/50 rounded-sm checked: cursor-pointer checked:bg-gray checked:border-green text-green" value="freeze" id="freeze"
+                                    checked={isChecked}
+                                    onChange={(e) => setIsChecked(!isChecked)}
+                                />
+                                <label className="form-check-label inline-block text-white text-[16px] ml-[12px]" htmlFor={"freeze"}>
+                                    Enable freeze authority
+                                </label>
                             </div>
                         </div>
-
-
-                        <div className="form-check items-center flex">
-                            <input type="checkbox" className="form-checkbox bg-gray appearance-none h-5 w-5 border border-white/50 rounded-sm checked: cursor-pointer checked:bg-gray checked:border-green text-green" value="freeze" id="freeze" />
-                            <label className="form-check-label inline-block text-white text-[16px] ml-[12px]" htmlFor={"freeze"}>
-                                Enable freeze authority
-                            </label>
-                        </div>
-                    </div>
-                    <button className="mt-[40px] flex w-[178px] bg-gray border border-white/50 rounded-md border-dashed items-center text-[20px] text-white/50 font-bold py-[14px] px-[24px]">
-                        Create Token
-                    </button>
+                    </form>
+                    <CreateTokenButton connection={connection} publicKey={publicKey} wallet={wallet} quantity={quantity} decimals={decimals} isChecked={isChecked} tokenName={tokenName} symbol={symbol} externalUrl={externalUrl} uri={uri} description={description} file={file} valueList={valueList} keyList={keyList} numAttribute={numAttribute}/>
 
 
 
@@ -234,26 +281,27 @@ export const UploadView: FC = ({ }) => {
 
 
                 <div className="ml-[40px]">
-                    <input id="file" type="file" name="file" onChange={handleFileChange} style={{ display: 'none' }} />
-                    <label htmlFor="file" >
-                        {fileImage == "" ? (<img className="w-[265px] h-[265px] mt-[28px] cursor-pointer" src="/img/image.png" />) : (
+                    <form>
+                        <input id="file" type="file" name="file" onChange={handleFileChange} style={{ display: 'none' }} />
+                        <label htmlFor="file" >
+                            {fileImage == "" ? (<img className="w-[265px] h-[265px] mt-[28px] cursor-pointer" src="/img/image.png" />) : (
 
-                            <img className="w-[265px] h-[265px] mt-[28px] cursor-pointer border border-green rounded-lg" src={fileImage} />
+                                <img className="w-[265px] h-[265px] mt-[28px] cursor-pointer border border-green rounded-lg" src={fileImage} />
+                            )}
+
+                        </label>
+
+                        {fileImage == "" ? (
+                            <p className="text-[16px] flex absolute text-white/50">* Upload image or asset for your game item</p>
+                        ) : (
+                            <div className="flex flex-row justify-between mt-[10px]">
+                                <p className=" text-[16px] flex text-white/50">{fileName}</p>
+                                <img src="img/x.png" className="flex w-[20px] h-[20px] cursor-pointer" onClick={deleteFileImage} />
+                            </div>
                         )}
 
-                    </label>
 
-                    {fileImage == "" ? (
-                        <p className="text-[16px] flex absolute text-white/50">* Upload image or asset for your game item</p>
-                    ) : (
-                        <div className="flex flex-row justify-between mt-[10px]">
-                        <p className=" text-[16px] flex text-white/50">{fileName}</p>
-                        <img src="img/x.png" className="flex w-[20px] h-[20px] cursor-pointer" onClick={deleteFileImage}/>
-                        </div>
-                    )}
-                    
-
-
+                    </form>
                 </div>
             </div>
 

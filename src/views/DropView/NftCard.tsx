@@ -13,7 +13,8 @@ type Props = {
     onSelect: (id: string) => void;
     onTokenDetailsFetched?: (props: any) => unknown;
     setNFTtoDrop: any;
-    setDropAmount: any;
+    setHoldNum: any;
+    setMintAddress: any;
 }
 
 export const NftCard: FC<Props> = ({
@@ -21,7 +22,8 @@ export const NftCard: FC<Props> = ({
     onSelect,
     onTokenDetailsFetched = () => { },
     setNFTtoDrop,
-    setDropAmount,
+    setHoldNum,
+    setMintAddress,
 
 }) => {
     const [fallbackImage, setFallbackImage] = useState(false);
@@ -52,6 +54,7 @@ export const NftCard: FC<Props> = ({
     const { image } = data ?? {};
 
     const tokenMintAddress = details.mint;
+    setMintAddress(tokenMintAddress);
 
 
 
@@ -60,7 +63,7 @@ export const NftCard: FC<Props> = ({
     const { publicKey } = useWallet();
     useEffect(() => {
         axios.get(`https://public-api.solscan.io/token/holders?tokenAddress=${tokenMintAddress}&offset=0&limit=10`).then( async response => {
-            setAmount(response.data.data.filter(account => account.owner == wallet.publicKey?.toString())[0]?.amount);
+            setAmount(response.data.data.filter(account => account.owner == wallet.publicKey?.toString())[0]?.amount)
         }
         )
     },[amount])
@@ -78,7 +81,7 @@ export const NftCard: FC<Props> = ({
  
 
     return (
-        <button className='card max-w-xs compact rounded-lg bg-[#212121] focus:outline-none focus:ring focus:ring-green' onClick={() => {setNFTtoDrop(data), setDropAmount(amount)}}>
+        <button className='card max-w-xs compact rounded-lg bg-[#212121] focus:outline-none focus:ring focus:ring-green' onClick={() => {setNFTtoDrop({...data, address:tokenMintAddress}), setHoldNum(amount)}}>
             <figure className='min-h-16 animate-pulse-color'>
                 {!fallbackImage || !error ? (
                     <img

@@ -11,6 +11,7 @@
   "dependencies": {
     "@bonfida/spl-name-service": "^0.1.40",
     "@getpip/react-pip-button": "^1.0.12",
+    "@glasseaters/hydra-sdk": "^0.3.2",
     "@heroicons/react": "^1.0.5",
     "@metaplex-foundation/js": "^0.11.5",
     "@metaplex-foundation/js-next": "^0.10.0",
@@ -27,6 +28,7 @@
     "@solana/wallet-adapter-solflare": "^0.4.0",
     "@solana/wallet-adapter-sollet": "^0.8.0",
     "@solana/wallet-adapter-wallets": "^0.11.3",
+    "@strata-foundation/spl-utils": "^3.10.0",
     "@tailwindcss/typography": "^0.4.1",
     "@types/lodash.orderby": "^4.6.6",
     "axios": "^0.27.2",
