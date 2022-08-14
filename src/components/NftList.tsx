@@ -7,7 +7,7 @@ type NFTListProps = {
     nfts: NftTokenAccount[];
     error?: Error;
     setRefresh: Dispatch<SetStateAction<boolean>>,
-    setNFTtoDrop: Dispatch<SetStateAction<object>>,
+    setNFTtoDrop: any,
     setHoldNum: Dispatch<number>,
     setMintAddress: Dispatch<string>,
 

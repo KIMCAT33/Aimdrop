@@ -32,8 +32,8 @@ export const UploadView: FC = ({ }) => {
     const [attribute, setAttribute] = useState({});
     const [fileImage, setFileImage] = useState("");
 
-    const [valueList, setValueList] = useState([]);
-    const [keyList, setKeyList] = useState([]);
+    const [valueList, setValueList] = useState<any[]>([]);
+    const [keyList, setKeyList] = useState<any[]>([]);
     const [numAttribute, setNumAttribute] = useState([0]);
 
 
@@ -182,7 +182,7 @@ export const UploadView: FC = ({ }) => {
 
                                 <textarea className="w-[692px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
                                     placeholder="Description"
-                                    type="text"
+                                   
                                     required
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
@@ -228,7 +228,7 @@ export const UploadView: FC = ({ }) => {
                                                 placeholder="e.g. Color"
                                                 id={`attribute-key-${num}`}
                                                 onChange={(e) => {
-                                                    let keys = [...keyList];
+                                                    let keys: any[] = [...keyList];
                                                     keys[Number(num)] = e.target.value;
                                                     setKeyList(keys);
                                                 }}
@@ -237,7 +237,7 @@ export const UploadView: FC = ({ }) => {
                                                 placeholder="e.g. Green"
                                                 id={`attribute-value-${num}`}
                                                 onChange={(e) => {
-                                                    let values = [...valueList];
+                                                    let values: any[]= [...valueList];
                                                     values[Number(num)] = e.target.value;
                                                     setValueList(values);
                                                 }}
@@ -273,7 +273,7 @@ export const UploadView: FC = ({ }) => {
                             </div>
                         </div>
                     </form>
-                    <CreateTokenButton connection={connection} publicKey={publicKey} wallet={wallet} quantity={quantity} decimals={decimals} isChecked={isChecked} tokenName={tokenName} symbol={symbol} externalUrl={externalUrl} uri={uri} description={description} file={file} valueList={valueList} keyList={keyList} numAttribute={numAttribute}/>
+                    <CreateTokenButton connection={connection} publicKey={publicKey} wallet={wallet} quantity={quantity} decimals={decimals} isChecked={isChecked} tokenName={tokenName} symbol={symbol} externalUrl={externalUrl} uri={uri} description={description} file={file!} valueList={valueList} keyList={keyList} numAttribute={numAttribute}/>
 
 
 

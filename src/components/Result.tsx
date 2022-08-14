@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { GameList } from "views/DropView/GameList";
 
-
+type Wallet = {
+    account_address: string;
+    balances: string;
+    transaction_count: string;
+}
 type ResultProps = {
     walletLists: any,
     NFTtoDrop: any,
@@ -128,7 +132,7 @@ export const Result = ({ walletLists, NFTtoDrop, holdNum, dropAmount, mintAddres
                     <p className="text-[20px] text-white font-bold w-[250px] mr-[8px]">Wallet Address</p>
                     <p className="text-[20px] text-white font-bold">SOL Balance</p>
                 </div>
-                {walletLists.slice(0, dropAmount).map(wallet =>
+                {walletLists.slice(0, dropAmount).map((wallet:Wallet) =>
                 (
                     <div className="flex flex-col space-y-[8px]">
                         <div className="flex flex-row items-center">

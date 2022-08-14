@@ -32,6 +32,22 @@ import {
 import { Account } from "near-api-js";
 import { FinalModal } from "components/FinalModal";
 
+type Wallet = {
+    account_address: string;
+    balances: string;
+    transaction_count: string;
+}
+
+type NFT = {
+    name: string;
+    symbol: string;
+    image: string;
+    external_url: string;
+    description: string;
+    attributes: Array<{trait_type:string, value: string}>;
+    address: string;
+}
+
 
 const walletPublicKey = "";
 
@@ -41,12 +57,20 @@ export const DropView: FC = ({ }) => {
     const { wallet, connect, connecting, publicKey } = useWallet();
     const Wallet = useWallet();
     const [walletToParsePublicKey, setWalletToParsePublicKey] = useState<string>(walletPublicKey);
-    const [NFTtoDrop, setNFTtoDrop] = useState({});
+    const [NFTtoDrop, setNFTtoDrop] = useState<NFT>({
+        name: "",
+        symbol: "",
+        image: "",
+        external_url: "",
+        description: "",
+        attributes: [],
+        address: ""
+    });
     const [refresh, setRefresh] = useState(false)
     const [page, setPage] = useState(0);
     const [filter, setFilter] = useState([]);
     const [gameList, setGameList] = useState(GameList);
-    const [walletLists, setWalletLists] = useState('');
+    const [walletLists, setWalletLists] = useState<Wallet[]>([]);
     const [holdNum, setHoldNum] = useState(0);
     const [dropAmount, setDropAmount] = useState(0);
     const [walletToSend, setWalletToSend] = useState([]);
@@ -88,7 +112,7 @@ export const DropView: FC = ({ }) => {
 
     let errorMessage
     if (error) {
-        errorMessage = error.message
+        errorMessage = (error as any).message
     }
 
 
@@ -98,6 +122,7 @@ export const DropView: FC = ({ }) => {
         }
     };
 
+    console.log(NFTtoDrop);
 
     useEffect(() => {
         if (!publicKey && wallet) {
@@ -163,7 +188,7 @@ export const DropView: FC = ({ }) => {
             }
 
 
-            const mint = new PublicKey(NFTtoDrop.address);
+            const mint = new PublicKey(NFTtoDrop!.address);
             const ownerTokenAccount = await Token.getAssociatedTokenAddress(
                 ASSOCIATED_TOKEN_PROGRAM_ID,
                 TOKEN_PROGRAM_ID,
@@ -300,12 +325,12 @@ export const DropView: FC = ({ }) => {
                         Show NFTs
                     </button>
                 ) : page === 1 ? (
-                    <div className="h-[60px] px-[24px] text-white/50 border border-dashed border-white/50 flex items-center justify-center rounded-md" disabled={connecting}>
+                    <div className="h-[60px] px-[24px] text-white/50 border border-dashed border-white/50 flex items-center justify-center rounded-md" >
                         {`${walletLists.length.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " "}/  ${checkedItems.size} filters`}
                     </div>
                 
                 ) : page === 2 ? (
-                    <div className="h-[60px] px-[24px] text-white/50 border border-dashed border-white/50 flex items-center justify-center rounded-md" disabled={connecting}>
+                    <div className="h-[60px] px-[24px] text-white/50 border border-dashed border-white/50 flex items-center justify-center rounded-md">
                         {`${dropAmount} / ${walletLists.length}` + " users"}
                     </div>
                 ) : (<div></div>)}
@@ -315,7 +340,15 @@ export const DropView: FC = ({ }) => {
                         <div className="flex w-[69px] h-[40px] items-center justify-center text-[16px] border border-white/30 rounded-md ">
                             Back
                         </div>
-                    ) : page === 1 ? (<button className="flex w-[69px] h-[40px] items-center justify-center text-[16px] border border-white text-white rounded-md hover:border-white/60 hover:text-white/60" onClick={() => { setPage(page - 1), setNFTtoDrop("") }}>
+                    ) : page === 1 ? (<button className="flex w-[69px] h-[40px] items-center justify-center text-[16px] border border-white text-white rounded-md hover:border-white/60 hover:text-white/60" onClick={() => { setPage(page - 1), setNFTtoDrop({
+                        name: "",
+                        symbol: "",
+                        image: "",
+                        external_url: "",
+                        description: "",
+                        attributes: [],
+                        address: ""
+                    }) }}>
                         Back
                     </button>) : page === 2 ? (
                         <button className="flex w-[69px] h-[40px] items-center justify-center text-[16px] border border-white text-white rounded-md hover:border-white/60 hover:text-white/60" onClick={() => { setPage(page - 1), setCheckedItems(new Set()) }}>
@@ -368,12 +401,12 @@ export const DropView: FC = ({ }) => {
 
                         }
                         {!error && !isLoading && !refresh &&
-                            <NftList nfts={nfts} error={error} setRefresh={setRefresh} setNFTtoDrop={setNFTtoDrop} setHoldNum={setHoldNum} setMintAddress={setMintAddress} />
+                            <NftList nfts={nfts} error={error as any} setRefresh={setRefresh} setNFTtoDrop={setNFTtoDrop} setHoldNum={setHoldNum} setMintAddress={setMintAddress} />
                         }
                     </div>
                 ) : page === 1 ? (
                     <div className="bg-gray">
-                        <FilterList filter={filter} setFilter={setFilter} gameLists={gameList} sorting={sorting} walletLists={walletLists} checkedItems={checkedItems} setCheckedItems={setCheckedItems} setGameFilter={setGameFilter} gameFilter={gameFilter} applyFilter={applyFilter} setApiUrl={setApiUrl}/>
+                        <FilterList filter={filter} setFilter={setFilter} gameLists={gameList} sorting={sorting} walletLists={walletLists} checkedItems={checkedItems} setCheckedItems={setCheckedItems} setGameFilter={setGameFilter as any} gameFilter={gameFilter} applyFilter={applyFilter} setApiUrl={setApiUrl}/>
                     </div>
                 ) :
                     page === 2 ? (

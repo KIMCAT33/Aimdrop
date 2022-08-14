@@ -1,6 +1,12 @@
-import { FC } from "react";
+
 import { Dispatch, FC, useState, useEffect, SetStateAction } from "react";
 import axios from 'axios';
+
+type Wallet = {
+    account_address: string;
+    balances: string;
+    transaction_count: string;
+}
 
 type WalletListsProps = {
     walletLists: any,
@@ -71,26 +77,26 @@ export const WalletList = ({ walletLists, setDropAmount, dropAmount, walletToSen
                         id="allUsers"
                         checked={dropAmount === walletLists.length}
                      />
-                    <label className="w-[250px] form-check-label inline-block text-white text-[20px] ml-[20px] font-bold" for={"allUsers"}>
+                    <label className="w-[250px] form-check-label inline-block text-white text-[20px] ml-[20px] font-bold" htmlFor={"allUsers"}>
                         Wallet Address
                     </label>
-                    <label className="w-[250px] form-check-label inline-block text-white text-[20px] ml-[20px] font-bold" for={"allUsers"}>
+                    <label className="w-[250px] form-check-label inline-block text-white text-[20px] ml-[20px] font-bold" htmlFor={"allUsers"}>
                         SOL Balance
                     </label>
                 </div>
 
                 <div className="flex flex-col space-y-[8px]">
-                    {walletLists.slice(0, 100).map((wallet, i) => (
+                    {walletLists.slice(0, 100).map((wallet:Wallet, i: string) => (
 
                         <div key={i} className="flex flex-row items-center">
                             <input type="checkbox" className="form-checkbox bg-gray appearance-none h-5 w-5 border border-white/50 rounded-sm checked: cursor-pointer checked:bg-gray checked:border-green text-green" value={i} id={i}
-                                checked={i < dropAmount}
+                                checked={Number(i) < dropAmount}
 
                             />
-                            <label className="w-[250px] mt-0 inline-block text-white text-[16px] ml-[20px] font-bold" for={i}>
+                            <label className="w-[250px] mt-0 inline-block text-white text-[16px] ml-[20px] font-bold" htmlFor={i}>
                                 {wallet.account_address.slice(0, 4) + "..." + wallet.account_address.slice(wallet.account_address.length - 4, wallet.account_address.length)}
                             </label>
-                            <label className="w-[250px]  inline-block text-white text-[16px] ml-[20px] font-bold" for={i}>
+                            <label className="w-[250px]  inline-block text-white text-[16px] ml-[20px] font-bold" htmlFor={i}>
                                 {wallet.balances}
                             </label>
                         </div>
@@ -116,7 +122,7 @@ export const WalletList = ({ walletLists, setDropAmount, dropAmount, walletToSen
                                     checked={select == value}
                                     onChange={handleChange}
                                     className="form-radio  text-white/0 appearance-none ring-1 bg-white/0 ring-white/50 checked:ring-green" />
-                                <label for={value} className="text-white text-[16px] ml-[12px]">{value}</label>
+                                <label htmlFor={value} className="text-white text-[16px] ml-[12px]">{value}</label>
                                 {value === "Others" ?
                                     (select === "Others" ? (
                                         <input

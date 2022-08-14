@@ -7,7 +7,13 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { first } from 'lodash';
 import {Metaplex} from "@metaplex-foundation/js";
 import axios from 'axios';
-
+type Account = {
+    address: string;
+    amount: number;
+    decimals: number;
+    owner: string;
+    rank: number;
+}
 type Props = {
     details: any;
     onSelect: (id: string) => void;
@@ -63,7 +69,7 @@ export const NftCard: FC<Props> = ({
     const { publicKey } = useWallet();
     useEffect(() => {
         axios.get(`https://public-api.solscan.io/token/holders?tokenAddress=${tokenMintAddress}&offset=0&limit=10`).then( async response => {
-            setAmount(response.data.data.filter(account => account.owner == wallet.publicKey?.toString())[0]?.amount)
+            setAmount(response.data.data.filter((account:Account) => account.owner == wallet.publicKey?.toString())[0]?.amount)
         }
         )
     },[amount])

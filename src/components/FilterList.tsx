@@ -6,7 +6,7 @@ import axios from 'axios';
 
 type Game = {
     title: string;
-    cateogyr: string;
+    category: string;
     code: string;
 }
 
@@ -119,9 +119,9 @@ checkedItemHandler,
 checkedItems,
 }) => {
     const [checked, setChecked] = useState(false);
-    const checkedHandler = ({target}) => {
+    const checkedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(!checked);
-        checkedItemHandler(target.id, target.checked);
+        checkedItemHandler(e.target.id, e.target.checked);
       
 
     }
@@ -164,19 +164,19 @@ checkedItems
 
     const [checked, setChecked] = useState(false);
 
-    const checkedHandler = ({target}) => {
+    const checkedHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
         setChecked(!checked);
         if(gameFilter.size === 0 || gameFilter.size === 1){
-            checkedItemHandler("game_nft_holder", target.checked);
+            checkedItemHandler("game_nft_holder", e.target.checked);
         }
        
         
         
-        if(target.checked){
-            gameFilter.add(target.value);
+        if(e.target.checked){
+            gameFilter.add(e.target.value);
             setGameFilter(gameFilter);
         }else{
-            gameFilter.delete(target.value);
+            gameFilter.delete(e.target.value);
             setGameFilter(gameFilter);
         }
 
