@@ -38,7 +38,7 @@
     "next": "12.1.0",
     "next-compose-plugins": "^2.2.1",
     "next-transpile-modules": "^9.0.0",
-    "react": "17.0.2",
+    "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-alert-template-basic": "^1.0.2",
     "react-countdown": "^2.3.2",

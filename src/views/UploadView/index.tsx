@@ -98,6 +98,8 @@ export const UploadView: FC = ({ }) => {
             setWalletToParsePublicKey(publicKey?.toBase58());
         }
     };
+
+    const SymbolText = `*Symbol is an initial for your game item like DG in 'Doggie JAM[DG]'`;
     return (
 
         <div className="bg-gray min-h-screen bg-local bg-cover">
@@ -171,7 +173,7 @@ export const UploadView: FC = ({ }) => {
                                     type="text"
                                     required
                                     onChange={(e) => setSymbol(e.target.value)} />
-                                <p className="text-white/50 text-[12px] mt-[4px]">*Symbol is an initial for your game item like DG in 'Doggie JAM[DG]'</p>
+                                <p className="text-white/50 text-[12px] mt-[4px]">{SymbolText}</p>
                             </div>
 
                             <div>

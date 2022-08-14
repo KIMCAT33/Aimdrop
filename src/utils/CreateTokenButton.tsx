@@ -103,7 +103,7 @@ export const CreateTokenButton: FC<Props> = ({
                 </button>
             }
 
-            {tokenAddresss !== "" && <div className="mt-5 text-white">✅ Successfuly created! Check it <a target="_blank" href={'https://explorer.solana.com/address/' + tokenAddresss}><strong className="underline text-white">here</strong></a></div>}
+            {tokenAddresss !== "" && <div className="mt-5 text-white">✅ Successfuly created! Check it <a target="_blank" rel="noreferrer" href={'https://explorer.solana.com/address/' + tokenAddresss}><strong className="underline text-white">here</strong></a></div>}
 
         </div>
     );
