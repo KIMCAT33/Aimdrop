@@ -32,6 +32,7 @@ import {
 import { Account } from "near-api-js";
 import { FinalModal } from "components/FinalModal";
 
+
 type Wallet = {
     account_address: string;
     balances: string;

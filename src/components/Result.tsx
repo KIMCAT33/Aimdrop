@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { GameList } from "views/DropView/GameList";
 
@@ -107,7 +108,7 @@ export const Result = ({ walletLists, NFTtoDrop, holdNum, dropAmount, mintAddres
                     {
                         
                         GameList.map(game => gameFilter.has(game.code) ? (
-                            <div className="flex flex-row mb-[8px]">
+                            <div key={game.code} className="flex flex-row mb-[8px]">
                         <img className="w-[20px] h-[20px] mr-[8px]" src="/img/check.png" />
                         <p className="text-white text-[16px]">{game.title + " [ " + game.category+ " ]"}</p>
                     </div>
@@ -134,7 +135,7 @@ export const Result = ({ walletLists, NFTtoDrop, holdNum, dropAmount, mintAddres
                 </div>
                 {walletLists.slice(0, dropAmount).map((wallet:Wallet) =>
                 (
-                    <div className="flex flex-col space-y-[8px]">
+                    <div key={wallet.account_address} className="flex flex-col space-y-[8px]">
                         <div className="flex flex-row items-center">
                             <img className="w-[20px] h-[20px] mr-[8px]" src="/img/check.png" />
                             <p className="text-[16px] text-white font-bold w-[250px] mr-[8px]"> {wallet.account_address.slice(0, 4) + "..." + wallet.account_address.slice(wallet.account_address.length - 4, wallet.account_address.length)}</p>

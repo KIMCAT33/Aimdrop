@@ -7,6 +7,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { first } from 'lodash';
 import {Metaplex} from "@metaplex-foundation/js";
 import axios from 'axios';
+
 type Account = {
     address: string;
     amount: number;

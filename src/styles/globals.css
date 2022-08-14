@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+    font-family: Prompt;
+}
+
+@font-face {
+    font-family: "Prompt";
+    font-weight: 400;
+    src: url("/fonts/Prompt-Black.ttf") format("truetype");
+}

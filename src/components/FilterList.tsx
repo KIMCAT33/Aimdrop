@@ -81,7 +81,7 @@ export const FilterList = ({ filter, setFilter, gameLists,sorting, walletLists, 
                 <div className="space-y-[8px]">
                     {gameLists.map((game:Game) => (
                        
-                        <GameFilter filterName={game.code} checkedItemHandler={checkedItemHandler} setGameFilter={setGameFilter} gameFilter={gameFilter} checkedItems={checkedItems}>{game.title + " [" + game.category + "]"}</GameFilter>
+                        <GameFilter key={game.code} filterName={game.code} checkedItemHandler={checkedItemHandler} setGameFilter={setGameFilter} gameFilter={gameFilter} checkedItems={checkedItems}>{game.title + " [" + game.category + "]"}</GameFilter>
                         /*<div key={game.code} className="form-check items-center flex">
                             <input 
                                 type="checkbox" 
