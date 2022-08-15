@@ -40,7 +40,7 @@ export const FinalModal: FC<Props> = ({
                     <div className="flex flex-row">
                         <Link href="/drop">
                         <a >
-                            <div className="w-[117px] px-[16px] py-[8px] border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[300px] mt-[15px] text-center font-bold" onClick={() => setFinalModal(false)}>
+                            <div className="w-[117px] px-[16px] py-[8px] border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[300px] mt-[15px] text-center font-bold" onClick={() => {setFinalModal(false); setPage(0);}}>
                                 Finish
                             </div>
                         </a>

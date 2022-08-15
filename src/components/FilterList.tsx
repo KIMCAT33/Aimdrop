@@ -30,7 +30,7 @@ export const FilterList = ({ filter, setFilter, gameLists,sorting, walletLists, 
 
     useEffect(() => {
         setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` + `${sorting !="" ? "sorting=" + sorting : ""}`);
-    },[gameFilter])
+    },[checkedItems])
 
     const checkedItemHandler = (id: any, isChecked: any) => {
 
@@ -82,17 +82,6 @@ export const FilterList = ({ filter, setFilter, gameLists,sorting, walletLists, 
                     {gameLists.map((game:Game) => (
                        
                         <GameFilter key={game.code} filterName={game.code} checkedItemHandler={checkedItemHandler} setGameFilter={setGameFilter} gameFilter={gameFilter} checkedItems={checkedItems}>{game.title + " [" + game.category + "]"}</GameFilter>
-                        /*<div key={game.code} className="form-check items-center flex">
-                            <input 
-                                type="checkbox" 
-                                className="form-checkbox bg-gray appearance-none h-5 w-5 border border-white/50 rounded-sm checked: cursor-pointer checked:bg-gray checked:border-green text-green" 
-                                value={game.code} 
-                                id={game.code} 
-                            />
-                            <label className="form-check-label inline-block text-white text-[16px] ml-[12px]" htmlFor={game.code}>
-                                {game.title + " [" + game.category + "]"}
-                            </label>
-                        </div>*/
                     ))
                     }
 

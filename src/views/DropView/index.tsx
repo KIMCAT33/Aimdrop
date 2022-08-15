@@ -123,7 +123,7 @@ export const DropView: FC = ({ }) => {
         }
     };
 
-    console.log(NFTtoDrop);
+    console.log(checkedItems);
 
     useEffect(() => {
         if (!publicKey && wallet) {
@@ -180,7 +180,6 @@ export const DropView: FC = ({ }) => {
 
         setSignature('');
         setisSending(true);
-       
         try {
             let Tx = new Transaction();
             const Receivers: string[] = [];
