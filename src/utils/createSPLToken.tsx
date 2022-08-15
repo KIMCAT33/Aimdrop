@@ -9,6 +9,16 @@ import { bundlrStorage, findMetadataPda, keypairIdentity, Metaplex, UploadMetada
 const endpoint = 'https://solana-mainnet-rpc.allthatnode.com/ZXfksUIJXUmKMeSSMaAHtR8Igb7FzVeq';
 const solanaConnection = new Connection(endpoint);
 
+type ATTRIBUTELIST = {
+    id: number,
+    trait_type: string,
+    value: string,
+}
+
+type INPUTATTRIBUTE = {
+    trait_type: string,
+    value: string
+}
 
 
 export async function createSPLToken(owner: PublicKey, wallet: WalletContextState, connection: Connection, quantity: number, decimals: number, isChecked: boolean, tokenName: string, symbol: string, externalUrl: string, uri: string,  description: string,file: Readonly<{
@@ -19,7 +29,7 @@ export async function createSPLToken(owner: PublicKey, wallet: WalletContextStat
     contentType: string | null;
     extension: string | null;
     tags: MetaplexFileTag[];
-}>,  attribute: any, setIscreating: Dispatch<SetStateAction<boolean>>, setTokenAddresss: Dispatch<SetStateAction<string>>, setSignature: Dispatch<SetStateAction<string>>) {
+}>,  setIscreating: Dispatch<SetStateAction<boolean>>, setTokenAddresss: Dispatch<SetStateAction<string>>, setSignature: Dispatch<SetStateAction<string>>, attributeList: ATTRIBUTELIST[]) {
     
 
 
@@ -28,7 +38,15 @@ export async function createSPLToken(owner: PublicKey, wallet: WalletContextStat
     .use(walletAdapterIdentity(wallet))
     .use(bundlrStorage());
 
+    const ATTRIBUTE:INPUTATTRIBUTE[] = [];
 
+    attributeList.map((item:ATTRIBUTELIST)=> {
+        let key = {
+            trait_type: item.trait_type,
+            value: item.value
+        }
+        ATTRIBUTE.push(key);
+    })
     
     const MY_TOKEN_METADATA: UploadMetadataInput = {
         "name": tokenName,
@@ -36,12 +54,7 @@ export async function createSPLToken(owner: PublicKey, wallet: WalletContextStat
         "description": description,
         "image": uri,
         "external_url" :externalUrl,
-        "attributes": [
-            {
-                "trait_type": "rarity",
-                "value": "unique"
-            }
-        ]
+        "attributes": ATTRIBUTE,
     }
     
     const ON_CHAIN_METADATA = {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { Dispatch, FC, useState, useEffect, SetStateAction } from "react";
+import React, { Dispatch, FC, useState, useEffect, SetStateAction, useRef } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
@@ -10,8 +10,13 @@ import { Loader } from "components/Loader";
 import { Metaplex, bundlrStorage, MetaplexFile, useMetaplexFileFromBrowser, walletAdapterIdentity, MetaplexFileTag, UploadMetadataInput } from "@metaplex-foundation/js-next";
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { CreateTokenButton } from "utils/CreateTokenButton";
+import { keys } from "lodash";
 
-
+type ATTRIBUTELIST = {
+    id: number,
+    trait_type: string,
+    value: string
+}
 const walletPublicKey = "";
 
 export const UploadView: FC = ({ }) => {
@@ -35,6 +40,17 @@ export const UploadView: FC = ({ }) => {
     const [valueList, setValueList] = useState<any[]>([]);
     const [keyList, setKeyList] = useState<any[]>([]);
     const [numAttribute, setNumAttribute] = useState([0]);
+    const nextId = useRef(0);
+
+    const [attributeList, setAttributeList] = useState<ATTRIBUTELIST[]>([{
+        id: 0,
+        trait_type: "",
+        value: ""
+    }]);
+  
+
+
+   
 
 
     const [file, setFile] = useState<Readonly<{
@@ -67,8 +83,6 @@ export const UploadView: FC = ({ }) => {
         setFileName(_file.displayName);
 
     }
-
-    console.log(description);
     const UploadFile = async () => {
         try {
             setError('');
@@ -86,6 +100,8 @@ export const UploadView: FC = ({ }) => {
             setUploading(false);
         }
     }
+
+
 
 
     const deleteFileImage = () => {
@@ -224,24 +240,45 @@ export const UploadView: FC = ({ }) => {
                                     <p className="text-green items-start">*</p>
                                 </div>
                                 <div className='space-y-[15px]'>
-                                    {numAttribute.map((num, i) => (
-                                        <div key={i} className="flex flex-row space-x-[4px] ">
+                                    {numAttribute.map((_id) => (
+                                        <div key={_id} className="flex flex-row space-x-[4px] ">
                                             <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
                                                 placeholder="e.g. Color"
-                                                id={`attribute-key-${num}`}
+                                               
+                                                id={String(_id)}
                                                 onChange={(e) => {
-                                                    let keys: any[] = [...keyList];
-                                                    keys[Number(num)] = e.target.value;
-                                                    setKeyList(keys);
+                                              
+                                                    let _target:ATTRIBUTELIST = attributeList.filter(item => item.id == _id)[0];
+                                
+                                                    
+                                                        let _key = {
+                                                            id: _id,
+                                                            trait_type: e.target.value,
+                                                            value: _target?.value,
+                                                        }
+                                                    
+                                                    
+                                                
+                            
+                                                    let temp = [ ...attributeList.filter(item => item.id != _id), _key];
+                                                    setAttributeList(temp);
                                                 }}
                                             />
                                             <input className="w-[316px] border-[#212121] border rounded-md p-[14px] bg-gray text-white/50 placeholder:text-[16px]"
                                                 placeholder="e.g. Green"
-                                                id={`attribute-value-${num}`}
+                                                id={String(_id)}
                                                 onChange={(e) => {
-                                                    let values: any[]= [...valueList];
-                                                    values[Number(num)] = e.target.value;
-                                                    setValueList(values);
+
+                                                    let _target:ATTRIBUTELIST = attributeList.filter(item => item.id == _id)[0];
+                                       
+                                                    let _value = {
+                                                        id: _id,
+                                                        trait_type: _target?.trait_type,
+                                                        value: e.target.value,
+                                                    }
+                                       
+                                                    let temp = [ ...attributeList.filter(item => item.id != _id), _value];
+                                                    setAttributeList(temp);
                                                 }}
                                             />
 
@@ -249,7 +286,11 @@ export const UploadView: FC = ({ }) => {
                                                 <img className="w-[20px] h-[20px]" src="/img/x.png"
 
                                                     onClick={() => {
-                                                        setNumAttribute(numAttribute.filter(number => number != num));
+                                                        let newAttributeList = attributeList.filter(item => item.id != _id);
+                                                      
+                                                        setAttributeList(newAttributeList);
+                                                        setNumAttribute(numAttribute.filter(number => number != _id));
+                                                    
                                                     }}
                                                 />
                                             </div>) : ("")}
@@ -258,7 +299,10 @@ export const UploadView: FC = ({ }) => {
                                 </div>
 
 
-                                <div className="mt-[12px] w-[137px] bg-white/10 items-center text-white text-[16px] px-[16px] py-[8px] rounded-md cursor-pointer" onClick={() => setNumAttribute((numAttribute.concat((numAttribute[numAttribute.length - 1]) + 1)))}>
+                                <div className="flex mt-[12px] w-[137px] bg-white/10 items-center justify-center text-white text-[16px] px-[16px] py-[8px] rounded-md cursor-pointer" onClick={() => {
+                                    nextId.current += 1;
+                                    setNumAttribute((numAttribute.concat(nextId.current)));
+                                }}>
                                     Add Attribute
                                 </div>
                             </div>
@@ -275,7 +319,7 @@ export const UploadView: FC = ({ }) => {
                             </div>
                         </div>
                     </form>
-                    <CreateTokenButton connection={connection} publicKey={publicKey} wallet={wallet} quantity={quantity} decimals={decimals} isChecked={isChecked} tokenName={tokenName} symbol={symbol} externalUrl={externalUrl} uri={uri} description={description} file={file!} valueList={valueList} keyList={keyList} numAttribute={numAttribute}/>
+                    <CreateTokenButton connection={connection} publicKey={publicKey} wallet={wallet} quantity={quantity} decimals={decimals} isChecked={isChecked} tokenName={tokenName} symbol={symbol} externalUrl={externalUrl} uri={uri} description={description} file={file!} attributeList={attributeList}/>
 
 
 

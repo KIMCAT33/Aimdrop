@@ -6,6 +6,15 @@ import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { Metaplex, bundlrStorage, MetaplexFile, useMetaplexFileFromBrowser, walletAdapterIdentity, MetaplexFileTag, UploadMetadataInput } from "@metaplex-foundation/js-next";
 
 
+
+type ATTRIBUTELIST = {
+    id: number,
+    trait_type: string,
+    value: string,
+}
+
+
+
 type Props = {
     publicKey: PublicKey | null;
     wallet: WalletContextState;
@@ -27,9 +36,7 @@ type Props = {
         extension: string | null;
         tags: MetaplexFileTag[];
     }>;
-    valueList: string[];
-    keyList: string[];
-    numAttribute: number[];
+    attributeList: ATTRIBUTELIST[];
 };
 
 export const CreateTokenButton: FC<Props> = ({
@@ -45,9 +52,7 @@ export const CreateTokenButton: FC<Props> = ({
     uri,
     description,
     file,
-    valueList,
-    keyList,
-    numAttribute,
+    attributeList,
 }) => {
 
     const { setVisible } = useWalletModal();
@@ -55,36 +60,12 @@ export const CreateTokenButton: FC<Props> = ({
     const [tokenAddresss, setTokenAddresss] = useState("");
     const [signature, setSignature] = useState("");
 
-    const [attribute, setAttribute] = useState([]);
-
-    /*
-    const MakeAttribute = async () => {
-        await numAttribute.map(num => {
-            let newObject: any = {};
-            newObject["trait_type"] = keyList[num];
-            newObject["value"] = valueList[num];
-            setAttribute([...attribute, newObject]);
-            console.log(newObject);
-            
-        })
-        console.log(attribute);
-    
-
-    }
-
-    
-    useEffect(()=>{
-        MakeAttribute();
-    }, [numAttribute])
-    */
-    
-
-
+ 
 
     return (
         <div>
             {!iscreating && !isNaN(quantity) && !isNaN(decimals) &&
-                <button className="mt-[40px] flex w-[178px] bg-gray border border-white/50 rounded-md border-dashed items-center text-[20px] text-white/50 font-bold py-[14px] px-[24px]" onClick={() => { if (publicKey) createSPLToken(publicKey, wallet, connection, quantity, decimals, isChecked, tokenName, symbol, externalUrl, uri, description, file, attribute, setIscreating, setTokenAddresss, setSignature); else setVisible(true) }}>Create token</button>
+                <button className="mt-[40px] flex w-[178px] bg-gray border border-white/50 rounded-md border-dashed items-center text-[20px] text-white/50 font-bold py-[14px] px-[24px]" onClick={() => { if (publicKey) createSPLToken(publicKey, wallet, connection, quantity, decimals, isChecked, tokenName, symbol, externalUrl, uri, description, file, setIscreating, setTokenAddresss, setSignature, attributeList); else setVisible(true) }}>Create token</button>
             }
 
             {!iscreating && (isNaN(quantity) || isNaN(decimals)) &&
