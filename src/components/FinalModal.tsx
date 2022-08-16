@@ -27,8 +27,8 @@ export const FinalModal: FC<Props> = ({
 
     }, [isSending])
 
-    const mainText = `If you've looked at the conditions, aimdrop and advertise your game to users!`;
-    const subText = `Let's Drop!`;
+    const mainText = `Clicking yes will aimdrop the NFT you have chosen to the listed wallets! `;
+    const subText = `Yes, Aimdrop it!`;
     return (
 
     
@@ -52,10 +52,10 @@ export const FinalModal: FC<Props> = ({
                     <p className="text-[24px] text-white font-bold ">Are you sure?</p>
                     <p className="text-[16px] text-white">{mainText}</p>
                     <div className="flex flex-row">
-                        <div className="w-[84px] px-[16px] py-[8px] border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[237px]" onClick={() => setFinalModal(false)}>
-                            Cancel
+                        <div className="w-[130px] px-[16px] py-[8px] flex justify-center border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[150px]" onClick={() => setFinalModal(false)}>
+                            No, not yet!
                         </div>
-                        <div className="w-[115px] px-[16px] py-[8px] border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[8px]" onClick={() => SendOnClick()}>
+                        <div className="w-[150px] px-[16px] py-[8px] flex justify-center border rounded-md border-white text-[16px] text-white hover:border-0 hover:text-gray hover:bg-green ml-[8px]" onClick={() => SendOnClick()}>
                             {subText}
                         </div>
 
