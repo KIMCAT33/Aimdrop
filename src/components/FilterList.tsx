@@ -27,10 +27,10 @@ type FilterListProps = {
 
 export const FilterList = ({ filter, setFilter, gameLists,sorting, walletLists, checkedItems, setCheckedItems, setGameFilter, applyFilter, setApiUrl, gameFilter }: FilterListProps) => {
 
-
+ 
     useEffect(() => {
         setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` + `${sorting !="" ? "sorting=" + sorting : ""}`);
-    },[checkedItems])
+    },[])
 
     const checkedItemHandler = (id: any, isChecked: any) => {
 

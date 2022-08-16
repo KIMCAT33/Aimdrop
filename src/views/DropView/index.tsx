@@ -84,7 +84,7 @@ export const DropView: FC = ({ }) => {
     // api filter
     const [apiUrl, setApiUrl] = useState('http://15.165.204.98:5000/filter_selection?');
     // filter_1=first_nft&  ilter_2=nft_transaction&
-    const [checkedItems, setCheckedItems] = useState(new Set());
+    const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set<string>());
 
 
     // filter_3=game_nft_holder&project_name=''& 
@@ -95,15 +95,17 @@ export const DropView: FC = ({ }) => {
     // "" = none, balances = Top balance user,  transaction_count = Top activate user
     const [sorting, setSorting] = useState("");
     
+    
  
     
 
     
     const applyFilter = async () => {
-        await setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` + `${sorting !="" ? "sorting=" + sorting : ""}`);
+        await setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` +`${checkedItems.has("game_nft_holder") ? "filter_3=game_nft_holder&project_name=" + "'"+ Array.from(gameFilter)[0] + "'&": ""}`+ `${sorting !="" ? "sorting=" + sorting : ""}`);
     }
 
 
+  
 
 
     const { nfts, isLoading, error } = useWalletNfts({
@@ -139,7 +141,7 @@ export const DropView: FC = ({ }) => {
     
 
 
-    }, [apiUrl,sorting, checkedItems]);
+    }, [apiUrl,sorting, checkedItems, gameFilter]);
 
     const handleWalletClick = () => {
         try {
@@ -154,28 +156,7 @@ export const DropView: FC = ({ }) => {
         }
     };
 
-    const checkBalance = async () => {
-        return (holdNum - dropAmount > 0);
-    }
-    /*
-        (async () => {
-            let fanoutSdk: FanoutClient;
-          
-            const authorityWallet = Keypair.generate();
-          
-            fanoutSdk = new FanoutClient(
-              connection,
-              new NodeWallet(authorityWallet)
-            );
-          
-            const init = await fanoutSdk.initializeFanout({
-              totalShares: 100,
-              name: `Test${Date.now()}`,
-              membershipModel: MembershipModel.Wallet,
-            });
-          })();
     
-    */
     const SendOnClick = async () => {
 
         setSignature('');
@@ -262,6 +243,7 @@ export const DropView: FC = ({ }) => {
 
 
     }
+    console.log(gameFilter.size);
 
 
 
