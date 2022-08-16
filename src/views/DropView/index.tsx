@@ -135,13 +135,15 @@ export const DropView: FC = ({ }) => {
                 console.log("Error connecting to the wallet: ", (error as any).message);
             }
         }
-        
-        setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` + `${sorting !="" ? "sorting=" + sorting : ""}`);
+        console.log(gameFilter);
+        setApiUrl(`http://15.165.204.98:5000/filter_selection?` + `${checkedItems.has("first_nft") ? "filter_1=first_nft&" : ""}` + `${checkedItems.has("nft_transaction") ? "filter_2=nft_transaction&" : ""}` +`${checkedItems.has("game_nft_holder") ? "filter_3=game_nft_holder&project_name=" + "'"+ Array.from(gameFilter)[0] + "'&": ""}`+ `${sorting !="" ? "sorting=" + sorting : ""}`);
         axios.get(apiUrl!).then(response => { setWalletLists(response.data); });
     
 
 
-    }, [apiUrl,sorting, checkedItems, gameFilter]);
+    }, [apiUrl,sorting, gameFilter]);
+
+    console.log(apiUrl);
 
     const handleWalletClick = () => {
         try {
