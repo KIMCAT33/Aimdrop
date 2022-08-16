@@ -43,7 +43,7 @@ export const WalletList = ({ walletLists, setDropAmount, dropAmount, walletToSen
     }
 
 
-    walletLists[3].account_address = "FAqqaVWLzs3rLxVfpJGNmF5NwYME3Gx11AwuA8srfKxi";
+    
     return (
         <div className="flex flex-row justify-between px-[120px] pt-[32px] bg-gray bg-screen pb-[50px]">
 
